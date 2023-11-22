@@ -46,3 +46,6 @@ E:\Repos\CSHangingManGame\SuperHangingManGame\SuperHangingManGame\bin\Debug\net6
 E:\Repos\CSHangingManGame\SuperHangingManGame\SuperHangingManGame\obj\Debug\net6.0\SuperHangingManGame.csproj.CopyComplete
 E:\Repos\CSHangingManGame\SuperHangingManGame\SuperHangingManGame\obj\Debug\net6.0\SuperHangingManGame.genruntimeconfig.cache
 E:\Repos\CSHangingManGame\SuperHangingManGame\SuperHangingManGame\obj\Debug\net6.0\ref\SuperHangingManGame.dll
+D:\Projetos\CSHangingManGame\SuperHangingManGame\SuperHangingManGame\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\Projetos\CSHangingManGame\SuperHangingManGame\SuperHangingManGame\obj\Debug\net6.0\SuperHangingManGame.csproj.AssemblyReference.cache
+D:\Projetos\CSHangingManGame\SuperHangingManGame\SuperHangingManGame\obj\Debug\net6.0\SuperHangingManGame.csproj.CopyComplete

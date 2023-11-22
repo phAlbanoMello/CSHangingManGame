@@ -9,7 +9,7 @@ namespace SuperHangingManGame
     {
         private List<LevelData> levels;
 
-        public ProgressionService(string jsonFilePath)
+        public void InitProgressionService(string jsonFilePath)
         {
             LoadProgressionData(jsonFilePath);
         }

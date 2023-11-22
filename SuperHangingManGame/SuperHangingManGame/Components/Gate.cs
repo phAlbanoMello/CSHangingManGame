@@ -7,11 +7,11 @@
         private int _index;
         private bool _locked;
         private Lock[] _locks;
-        private int[] _openLocksIndexes;
-        private int[] _closedLocksIndexes;
 
-        public int Level { get { return _level; } private set { } }
-        public bool isLocked { get { return _locked; } private set { } }
+        public int Index => _index;
+        public int Level => _level;
+        public bool IsLocked => _locked;
+        public string Theme => _theme;
 
         public Gate(string theme, Lock[] locks, int level, int index)
         {
@@ -21,14 +21,14 @@
             _locks = locks;
         }
 
-        public void Unlock()
+        public void UnlockGate()
         {
             if (_locked)
             {
                 _locked = false;
             }
         }
-        public void Lock()
+        public void LockGate()
         {
             if (!_locked)
             {
@@ -40,18 +40,18 @@
         {
             _locks[lockIndex].SetLockedState(LockedState.Closed);
         }
-
-        public int GetClosedLocks()
+        public void OpenLock(int lockIndex)
         {
-            int count = 0;
-            for (int i = 0; i < _locks.Length; i++)
-            {
-                if (_locks[i].LockedState == LockedState.Closed)
-                {
-                    count++;
-                }
-            }
-            return count;
+            _locks[lockIndex].SetLockedState(LockedState.Open);
+        }
+        public void BreakLock(int lockIndex)
+        {
+            _locks[lockIndex].SetLockedState(LockedState.Broken);
+        }
+
+        public Lock[] GetLocks()
+        {
+            return _locks;
         }
     }
 }

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Repos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\SuperHangingManGame.csproj": {}
+    "D:\\Projetos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\SuperHangingManGame.csproj": {}
   },
   "projects": {
-    "E:\\Repos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\SuperHangingManGame.csproj": {
+    "D:\\Projetos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\SuperHangingManGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Repos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\SuperHangingManGame.csproj",
+        "projectUniqueName": "D:\\Projetos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\SuperHangingManGame.csproj",
         "projectName": "SuperHangingManGame",
-        "projectPath": "E:\\Repos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\SuperHangingManGame.csproj",
-        "packagesPath": "C:\\Users\\pedro.albano\\.nuget\\packages\\",
-        "outputPath": "E:\\Repos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\obj\\",
+        "projectPath": "D:\\Projetos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\SuperHangingManGame.csproj",
+        "packagesPath": "C:\\Users\\Pedro\\.nuget\\packages\\",
+        "outputPath": "D:\\Projetos\\CSHangingManGame\\SuperHangingManGame\\SuperHangingManGame\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pedro.albano\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

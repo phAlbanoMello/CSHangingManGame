@@ -16,9 +16,9 @@ namespace SuperHangingManGame
 
         //TODO: maybe insert secret word logic here
 
-        public Lock(int index)
+        public Lock(int index, LockedState state = LockedState.Closed)
         {
-            _lockedState = LockedState.Closed;
+            _lockedState = state;
             _index = index;
         }
 
