@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SuperHangingManGame
+﻿namespace SuperHangingManGame.Services
 {
 	public class GateManager
 	{

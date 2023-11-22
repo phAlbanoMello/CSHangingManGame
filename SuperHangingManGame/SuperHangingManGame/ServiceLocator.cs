@@ -1,19 +1,31 @@
-﻿namespace SuperHangingManGame
+﻿using SuperHangingManGame.Interfaces;
+
+namespace SuperHangingManGame.Services
 {
 	public class ServiceLocator
-	{
-        private GateDrawer gateDrawer;
-        private GuessValidationService guessValidationService;
-        private DialogueService dialogueService;
+    {
+        private IGateDrawer gateDrawer;
+        private IGuessValidatorService guessValidationService;
+        private IDataSerializer<Gate[]> progressionService;
         private GateManager gateManager;
-        private ProgressionService progressionService;
 
-        public static void InitializeServices()
+        public IGateDrawer GateDrawer { get { return gateDrawer; } private set { } }
+        public IGuessValidatorService ValidatorService { get { return guessValidationService; } private set { } }
+        public IDataSerializer<Gate[]> ProgressionService { get => progressionService; private set { } }
+        public GateManager GateManager { get => gateManager; private set { } }
+
+        public ServiceLocator()
         {
-            //gateManager = new GateManager();
-            //gateDrawer = new GateDrawer();
-            //guessValidationService = new GuessValidationService();
-            //dialogueService = new DialogueService();
+            InitializeServices();
+        }
+
+        public void InitializeServices()
+        {
+            gateManager = new GateManager();
+            gateDrawer = new GateDrawer();
+            guessValidationService = new GuessValidationService();
+
+            //Should I get the json file using an directoryseach service or something like that?
             //progressionService = new ProgressionService();
 
             //progressionService.InitProgressionService() --> Make it get the path to the jsonFiles

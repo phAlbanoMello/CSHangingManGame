@@ -20,6 +20,7 @@
             _index = index;
             _locks = locks;
         }
+        public Gate(){}
 
         public void UnlockGate()
         {

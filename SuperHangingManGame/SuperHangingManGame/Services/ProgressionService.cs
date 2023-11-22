@@ -2,48 +2,50 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
+using SuperHangingManGame.Interfaces;
 
-namespace SuperHangingManGame
+namespace SuperHangingManGame.Services
 {
-    public class ProgressionService
+    public class ProgressionService : IDataSerializer<Gate[]>
     {
-        private List<LevelData> levels;
+        private readonly Gate[]? gates;
 
-        public void InitProgressionService(string jsonFilePath)
-        {
-            LoadProgressionData(jsonFilePath);
-        }
-
-        private List<LevelData> LoadProgressionData(string jsonFilePath)
+        public ProgressionService(string jsonFilePath)
         {
             try
             {
                 string jsonData = File.ReadAllText(jsonFilePath);
-                levels = JsonConvert.DeserializeObject<List<LevelData>>(jsonData);
+                gates = JsonConvert.DeserializeObject <Gate[]>(jsonData);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error loading progression data: {ex.Message}");
-                levels = new List<LevelData>();
+                gates = new Gate[0];
             }
-            return null;
         }
 
-        public LevelData GetLevelData(int level)
+        public Gate GetGateByIndex(int index)
         {
-            if (level >= 1 && level <= levels.Count)
+            if (gates == null || gates.Length < 1 ) {
+                Console.WriteLine("Error : Gate array was not loaded");    
+            }
+            if (index >= 0 && index < gates.Length)
             {
-                return levels[level - 1];
+                return gates[index];
             }
 
-            Console.WriteLine("Invalid level. Returning default data.");
-            return new LevelData();
+            Console.WriteLine("Invalid index. Returning default data.");
+            return new Gate();
         }
-    }
 
-    public class LevelData
-    {
-        public int NumberOfLocks { get; set; }
-        public int WordDifficulty { get; set; }
+        public void Serialize(string filePath, Gate[] data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Gate[] Deserialize(string filePath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

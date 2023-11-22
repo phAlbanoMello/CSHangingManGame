@@ -1,10 +1,12 @@
-﻿using System;
+﻿using SuperHangingManGame.Interfaces;
 
-namespace SuperHangingManGame
+namespace SuperHangingManGame.Services
 {
-    public class GateDrawer
+    public class GateDrawer : IGateDrawer
     {
-        public static void DrawGate(Gate gate)
+        public GateDrawer(){}
+
+        public void DrawGate(Gate gate)
         {
             Lock[] locks = gate.GetLocks();
 

@@ -1,11 +1,16 @@
-﻿using System;
+﻿using SuperHangingManGame.Interfaces;
 
-namespace SuperHangingManGame
+namespace SuperHangingManGame.Services
 {
-	public class GuessValidationService
+	public class GuessValidationService : IGuessValidatorService
 	{
 		public GuessValidationService()
 		{
 		}
-	}
+
+        public bool IsValidGuess(char letter)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
