@@ -1,8 +1,8 @@
-﻿namespace SuperHangingManGame
+﻿namespace SuperHangingManGame.Components
 {
     public class Gate
     {
-        private string _theme;
+        private Theme _theme;
         private int _level;
         private int _index;
         private bool _locked;
@@ -11,9 +11,9 @@
         public int Index => _index;
         public int Level => _level;
         public bool IsLocked => _locked;
-        public string Theme => _theme;
+        public Theme Theme => _theme;
 
-        public Gate(string theme, Lock[] locks, int level, int index)
+        public Gate(Theme theme, Lock[] locks, int level, int index)
         {
             _theme = theme;
             _level = level;

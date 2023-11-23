@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.IO;
 using SuperHangingManGame.Interfaces;
+using SuperHangingManGame.Components;
 
 namespace SuperHangingManGame.Services
 {

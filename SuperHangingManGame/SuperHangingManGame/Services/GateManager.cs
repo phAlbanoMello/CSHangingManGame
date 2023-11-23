@@ -1,4 +1,6 @@
-﻿namespace SuperHangingManGame.Services
+﻿using SuperHangingManGame.Components;
+
+namespace SuperHangingManGame.Services
 {
 	public class GateManager
 	{

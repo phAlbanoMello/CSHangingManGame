@@ -1,4 +1,5 @@
-﻿using SuperHangingManGame.Interfaces;
+﻿using SuperHangingManGame.Components;
+using SuperHangingManGame.Interfaces;
 
 namespace SuperHangingManGame.Services
 {

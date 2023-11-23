@@ -1,13 +1,24 @@
-﻿using SuperHangingManGame.Interfaces;
+﻿using SuperHangingManGame.Components;
+using SuperHangingManGame.Interfaces;
+using static SuperHangingManGame.Services.ConsoleService;
 
 namespace SuperHangingManGame.Services
 {
     public class GateDrawer : IGateDrawer
     {
-        public GateDrawer(){}
+        private const int drawingSpeed = 10;
+        private const int gateHeight = 3;
+        private const string gateFrame = "^------^";
+        private const string gateBottomFrame = "~~~~~~~~";
+        private const string closedLock = "|  ()  |";
+        private const string openLock = "|  >>  |";
+        private const string brokenLock = "|  XX  |";
+        private const string gateWall = "||||||||";
+        private const AlignPosition alignPosition = AlignPosition.Middle;
 
-        public void DrawGate(Gate gate)
+        public async Task DrawGate(Gate gate)
         {
+            ConsoleService.SetFontColor(gate.Theme.Color);
             Lock[] locks = gate.GetLocks();
 
             if (locks.Length <= 0)
@@ -15,35 +26,65 @@ namespace SuperHangingManGame.Services
                 return;
             }
 
-            for (int i = 0; i < locks.Length; i++)
-            {
-                Console.Write("--------");
-            }
+            string fullGateFrame = ComposeHorizontalStringShape(gateFrame, locks.Length);
+            string fullGateBottomFrame = ComposeHorizontalStringShape(gateBottomFrame, locks.Length);
+
+            string fullWall = ComposeHorizontalStringShape(gateWall, locks.Length);
+            await DrawGateFrame(fullGateFrame);
 
             Console.WriteLine();
+            await DrawGateWall(fullWall);
+            ConsoleService.AlignText(fullGateFrame, AlignPosition.Middle);
+            await DrawLocks(locks);
+            Console.WriteLine();
+            await DrawGateWall(fullWall);
+            await DrawGateFrame(fullGateBottomFrame);
+        }
+
+        private static async Task DrawLocks(Lock[] locks)
+        {
             for (int i = 0; i < locks.Length; i++)
             {
                 switch (locks[i].LockedState)
                 {
                     case LockedState.Closed:
-                        Console.Write("|  ()  |");
+                        await DialogueService.DisplayMessageInLine(closedLock, drawingSpeed);
                         break;
                     case LockedState.Open:
-                        Console.Write("|  >>  |");
+                        await DialogueService.DisplayMessageInLine(openLock, drawingSpeed);
                         break;
                     case LockedState.Broken:
-                        Console.Write("|  XX  |");
+                        await DialogueService.DisplayMessageInLine(brokenLock, drawingSpeed);
                         break;
                     default:
                         break;
                 }
             }
-            Console.WriteLine();
-            for (int i = 0; i < locks.Length; i++)
+        }
+
+        private static async Task DrawGateFrame(string fullGateFrame)
+        {
+            ConsoleService.AlignText(fullGateFrame, AlignPosition.Middle);
+            await DialogueService.DisplayMessageInLine(fullGateFrame, drawingSpeed);
+        }
+        private static async Task DrawGateWall(string fullGateWall)
+        {
+            for (int i = 0;i < gateHeight; i++)
             {
-                Console.Write("--------");
+                ConsoleService.AlignText(fullGateWall, AlignPosition.Middle);
+                await DialogueService.DisplayMessageInLine(fullGateWall, drawingSpeed);
+                Console.WriteLine();
             }
-            Console.WriteLine();
+        }
+
+        private string ComposeHorizontalStringShape(string component, int times)
+        {//TODO: Create a service for handling strings.
+            string result = string.Empty;
+            for (; times > 0; times--)
+            {
+                result += component;
+            }
+            return result;
         }
     }
 }
