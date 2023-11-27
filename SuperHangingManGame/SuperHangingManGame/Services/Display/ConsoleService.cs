@@ -1,4 +1,6 @@
-﻿namespace SuperHangingManGame.Services
+﻿using SuperHangingManGame.Interfaces;
+
+namespace SuperHangingManGame.Services.Display
 {
     public static class ConsoleService
     {
@@ -12,7 +14,7 @@
                     leftPadding = 0;
                     break;
                 case AlignPosition.Right:
-                    leftPadding = (screenWidth - finalString.Length);
+                    leftPadding = screenWidth - finalString.Length;
                     break;
                 case AlignPosition.Middle:
                     leftPadding = (screenWidth - finalString.Length) / 2;

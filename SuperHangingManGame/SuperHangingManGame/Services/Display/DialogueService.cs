@@ -1,12 +1,11 @@
-﻿using System.Text;
+﻿using SuperHangingManGame.Interfaces;
+using System.Text;
 using System.Text.RegularExpressions;
-using static SuperHangingManGame.Services.ConsoleService;
 
-namespace SuperHangingManGame.Services
+namespace SuperHangingManGame.Services.Display
 {
-    public static class DialogueService
+    public class DialogueService
     {
-
         private const string pattern = @"\*p\((\d+)\)"; //*p(int delayinMilliseconds)
 
         /// <summary>
@@ -16,7 +15,9 @@ namespace SuperHangingManGame.Services
         /// <param name="typingDelay">Delay between each character</param>
         /// <param name="skipLine">If the cursor should go to the next line after displaying the message</param>
         /// <returns></returns>
-        public static async Task DisplayMessage(string message, int typingDelay, AlignPosition alignment = AlignPosition.Middle)
+        /// 
+
+        public static async Task DisplayMessage(string message, int typingDelay, ConsoleService.AlignPosition alignment = ConsoleService.AlignPosition.Middle)
         {
             string finalString = message;
             Pause[] pauses = ExtractPauses(message, out finalString);
@@ -54,10 +55,13 @@ namespace SuperHangingManGame.Services
 
         public static async Task SkipLines(int lineCount)
         {
-            for (int i = 0; i < lineCount; i++)
+            await Task.Run(() =>
             {
-                Console.WriteLine();
-            }
+                for (int i = 0; i < lineCount; i++)
+                {
+                    Console.WriteLine();
+                }
+            });
         }
 
         public static Pause[] ExtractPauses(string input, out string finalString)

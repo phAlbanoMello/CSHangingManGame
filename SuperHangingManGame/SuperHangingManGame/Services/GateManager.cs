@@ -1,8 +1,9 @@
 ﻿using SuperHangingManGame.Components;
+using SuperHangingManGame.Interfaces;
 
 namespace SuperHangingManGame.Services
 {
-	public class GateManager
+	public class GateManager : IGateManager
 	{
 		private Gate[] _gates;
 

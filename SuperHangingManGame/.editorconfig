@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# IDE0027: Usar o corpo da expressão para acessador
+dotnet_diagnostic.IDE0027.severity = silent

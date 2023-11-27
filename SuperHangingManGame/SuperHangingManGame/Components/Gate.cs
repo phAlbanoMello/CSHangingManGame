@@ -49,7 +49,7 @@
         {
             _locks[lockIndex].SetLockedState(LockedState.Broken);
         }
-
+        
         public Lock[] GetLocks()
         {
             return _locks;
