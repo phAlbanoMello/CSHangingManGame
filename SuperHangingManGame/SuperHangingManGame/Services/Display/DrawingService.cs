@@ -7,14 +7,29 @@ namespace SuperHangingManGame.Services.Display
 {
     public static class DrawingService
     {
-        //TODO : FINISH DEFINING INTERFACES FOR THE SERVICE LOCATOR AND PROPER INITIALIZATION
-        //TODO : FINISH DRAWING SERVICE CLASS
-        //TODO : GO BACK TO GAME CLASS AND RESUME FINISHING CORE LOOP 
-
         private const int drawingSpeed = 10;
         private const int gateHeight = 3;
 
-        public static async Task DrawGate(Gate gate)
+        public static async Task DrawGuessingField(char[] guessedLetters, string secretWord)
+        {
+            string guessingField = "";
+            
+            for (int i = 0; i < secretWord.Length; i++)
+            {
+                if (guessedLetters.Contains(secretWord[i]))
+                {
+                    guessingField += $"[{secretWord[i]}]";
+                }
+                else
+                {
+                    guessingField += "[_]";
+                }
+            }
+            ConsoleService.AlignText(guessingField, ConsoleService.AlignPosition.Middle);
+            await DialogueService.DisplayMessageInLine(guessingField, secretWord.Length);
+        }
+
+        public static async Task DrawGate(Gate gate, int speed)
         {
             ConsoleService.SetFontColor(gate.Theme.Color);
             Lock[] locks = gate.GetLocks();
@@ -24,11 +39,12 @@ namespace SuperHangingManGame.Services.Display
                 return;
             }
 
-            string fullGateFrame = ComposeSequenceStringShape(DrawingTemplates.GATE_FRAME, locks.Length, Direction.HORIZONTAL);
-            string fullGateBottomFrame = ComposeSequenceStringShape(DrawingTemplates.GATE_FRAME_BOTTOM, locks.Length, Direction.HORIZONTAL);
+            string fullGateFrame = ComposeSequenceStringShape(DrawingTemplates.GATE_FRAME, locks.Length);
+            string fullGateBottomFrame = ComposeSequenceStringShape(DrawingTemplates.GATE_FRAME_BOTTOM, locks.Length);
 
-            string fullWall = ComposeSequenceStringShape(DrawingTemplates.GATE_WALL, locks.Length, Direction.HORIZONTAL);
-            await DrawGateFrame(fullGateFrame);
+
+            string fullWall = ComposeSequenceStringShape(DrawingTemplates.GATE_WALL, locks.Length);
+            await DrawGateFrame(fullGateFrame, speed);
 
             Console.WriteLine();
             await DrawGateWall(fullWall);
@@ -36,7 +52,8 @@ namespace SuperHangingManGame.Services.Display
             await DrawLocks(locks);
             Console.WriteLine();
             await DrawGateWall(fullWall);
-            await DrawGateFrame(fullGateBottomFrame);
+            await DrawGateFrame(fullGateBottomFrame, speed);
+            Console.WriteLine();
         }
         private static async Task DrawLocks(Lock[] locks)
         {
@@ -58,10 +75,10 @@ namespace SuperHangingManGame.Services.Display
                 }
             }
         }
-        private static async Task DrawGateFrame(string fullGateFrame)
+        private static async Task DrawGateFrame(string fullGateFrame, int speed)
         {
             ConsoleService.AlignText(fullGateFrame, ConsoleService.AlignPosition.Middle);
-            await DialogueService.DisplayMessageInLine(fullGateFrame, drawingSpeed);
+            await DialogueService.DisplayMessageInLine(fullGateFrame, drawingSpeed / speed);
         }
         private static async Task DrawGateWall(string fullGateWall)
         {
@@ -72,11 +89,11 @@ namespace SuperHangingManGame.Services.Display
                 Console.WriteLine();
             }
         }
-        private static string ComposeSequenceStringShape(string input, int length, Direction direction)
+        private static string ComposeSequenceStringShape(string input, int length)
         {
             if (length <= 0)
             {
-                throw new ArgumentException("Repetitions should be greater than zero.");
+                throw new ArgumentException("Lenght should be greater than zero.");
             }
 
             string result = string.Empty;
@@ -84,13 +101,7 @@ namespace SuperHangingManGame.Services.Display
             for (int i = 0; i < length; i++)
             {
                 result += input;
-
-                if (direction == Direction.VERTICAL && i < length - 1)
-                {
-                    result += "\n";
-                }
             }
-
             return result;
         }
 

@@ -10,16 +10,18 @@ namespace SuperHangingManGame
     {
         private LockedState _lockedState;
         private int _index;
+        private string _secretWord;
 
         public LockedState LockedState { get { return _lockedState; } private set { }}
         public int Index { get { return _index; } private set { }}
 
-        //TODO: maybe insert secret word logic here
+        public string SecretWord { get { return _secretWord; } private set { } }
 
-        public Lock(int index, LockedState state = LockedState.Closed)
+        public Lock(int index, string secretWord, LockedState state = LockedState.Closed)
         {
             _lockedState = state;
             _index = index;
+            _secretWord = secretWord;
         }
 
         public void SetLockedState(LockedState state)

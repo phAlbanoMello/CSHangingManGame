@@ -1,4 +1,6 @@
-﻿using SuperHangingManGame.Interfaces;
+﻿using SuperHangingManGame.Components;
+using SuperHangingManGame.Interfaces;
+using System.Diagnostics;
 
 namespace SuperHangingManGame.Services.Display
 {
@@ -24,6 +26,16 @@ namespace SuperHangingManGame.Services.Display
                     break;
             }
             Console.SetCursorPosition(leftPadding, Console.CursorTop);
+        }
+
+        public static Tuple<int, int> GetCursorPosition()
+        {
+            return Console.GetCursorPosition().ToTuple();
+        }
+        public static void SetCursorPosition(CursorPoint cursorPoint)
+        {
+            Debug.WriteLine("Setting cursor position");
+            Console.SetCursorPosition(cursorPoint.left, cursorPoint.top);
         }
 
         public static void SetFontColor(ConsoleColor color)

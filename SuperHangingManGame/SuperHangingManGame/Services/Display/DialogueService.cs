@@ -1,12 +1,14 @@
 ﻿using SuperHangingManGame.Interfaces;
 using System.Text;
 using System.Text.RegularExpressions;
+using SuperHangingManGame.Components;
 
 namespace SuperHangingManGame.Services.Display
 {
     public class DialogueService
     {
         private const string pattern = @"\*p\((\d+)\)"; //*p(int delayinMilliseconds)
+        private int baseSpeed = 1;
 
         /// <summary>
         /// Display Messages with support for pause patterns on the strings that can be marked with *p(int delayInMilliseconds)
@@ -16,22 +18,23 @@ namespace SuperHangingManGame.Services.Display
         /// <param name="skipLine">If the cursor should go to the next line after displaying the message</param>
         /// <returns></returns>
         /// 
-
         public static async Task DisplayMessage(string message, int typingDelay, ConsoleService.AlignPosition alignment = ConsoleService.AlignPosition.Middle)
         {
             string finalString = message;
             Pause[] pauses = ExtractPauses(message, out finalString);
 
             ConsoleService.AlignText(finalString, alignment);
-
+            
+            int nextPauseIndex = 0;
             for (int i = 0; i < finalString.Length; i++)
             {
-                foreach (var pause in pauses.Where(pause => i == pause._pauseIndex))
+                if (nextPauseIndex < pauses.Length && pauses[nextPauseIndex]._pauseIndex == i)
                 {
-                    await Task.Delay(pause._delay);
+                    await Task.Delay(pauses[nextPauseIndex]._delay);
+                    nextPauseIndex++;
                 }
-                await Task.Delay(typingDelay);
                 Console.Write(finalString[i]);
+                await Task.Delay(typingDelay);
             }
 
             Console.WriteLine();
@@ -42,12 +45,15 @@ namespace SuperHangingManGame.Services.Display
             string finalString = message;
             Pause[] pauses = ExtractPauses(message, out finalString);
 
+            int nextPauseIndex = 0;
             for (int i = 0; i < finalString.Length; i++)
             {
-                foreach (var pause in pauses.Where(pause => i == pause._pauseIndex))
+                if (nextPauseIndex < pauses.Length && pauses[nextPauseIndex]._pauseIndex == i)
                 {
-                    await Task.Delay(pause._delay);
+                    await Task.Delay(pauses[nextPauseIndex]._delay);
+                    nextPauseIndex++;
                 }
+
                 await Task.Delay(typingDelay);
                 Console.Write(finalString[i]);
             }

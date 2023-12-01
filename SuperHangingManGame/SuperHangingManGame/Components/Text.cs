@@ -1,6 +1,6 @@
 ﻿namespace SuperHangingManGame.Components
 {
-    internal class Text
+    public class Text
     {
         private int _id;
         private string _value;

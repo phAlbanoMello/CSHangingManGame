@@ -8,9 +8,6 @@ class Program
     {
         ServiceLocator serviceLocator = new ServiceLocator();
         await serviceLocator.InitializeServices();
-
-        
-
         await serviceLocator.GameService.StartGame();
     }
 }
