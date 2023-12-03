@@ -26,7 +26,7 @@ namespace SuperHangingManGame.Services.Display
                 }
             }
             ConsoleService.AlignText(guessingField, ConsoleService.AlignPosition.Middle);
-            await DialogueService.DisplayMessageInLine(guessingField, secretWord.Length);
+            await DialogueService.DisplayMessageInLine(guessingField, 60);
         }
 
         public static async Task DrawGate(Gate gate, int speed)

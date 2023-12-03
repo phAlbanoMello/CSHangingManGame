@@ -18,5 +18,8 @@ namespace SuperHangingManGame.Components
             top = cursorPosition.Item2;
             this.label = label;
         }
+        public CursorPoint() {
+            left = 0; top = 0; label = "";
+        }
     }
 }

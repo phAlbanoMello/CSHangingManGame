@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SuperHangingManGame")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+649f70b424b04dd1d58238ea561f0adb02f99bc8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4622c09748df7c435b13bcc949dcf3257b5613ce")]
 [assembly: System.Reflection.AssemblyProductAttribute("SuperHangingManGame")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SuperHangingManGame")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

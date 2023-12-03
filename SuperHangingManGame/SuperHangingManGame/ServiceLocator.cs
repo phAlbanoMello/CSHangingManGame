@@ -9,6 +9,7 @@ namespace SuperHangingManGame.Services
     {
         private IGateManager? gateManager;
         private IGameService? gameService;
+    
         private IGuessValidatorService? guessValidationService;
         private IDataSerializer<Gate[]>? gateDataSerializationService;
         private ITextManager? textManager;
@@ -21,11 +22,6 @@ namespace SuperHangingManGame.Services
         {
             gateManager = new GateManager();
             textManager = new TextManager();
-
-            TextManager.TextWritten += (sender, e) =>
-            {
-                Debug.WriteLine($"Text written: {e.WrittenText}");
-            };
 
             guessValidationService = new GuessValidationService();
             gameService = new GameService(gateManager);
