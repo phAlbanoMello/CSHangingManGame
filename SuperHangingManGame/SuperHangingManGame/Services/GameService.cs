@@ -72,19 +72,6 @@ namespace SuperHangingManGame.Services
         public async Task StartGame()
         {
             isGameOver = false;
-            string[] secretWords = { "Tree", "Mountain", "Cave" };
-            Theme theme = new Theme(ConsoleColor.Green, "Nature", secretWords);
-            Lock[] locks = { new Lock(0, secretWords[0]), new Lock(1, secretWords[1]), new Lock(2, secretWords[2]) };
-            
-            string[] secretWordsB = { "Asphalt", "Street", "Building", "Traffic" };
-            Theme themeB = new Theme(ConsoleColor.Blue, "City", secretWordsB);
-            Lock[] locksB = { new Lock(0, secretWordsB[0]), new Lock(1, secretWordsB[1]), new Lock(2, secretWordsB[2]), new Lock(3, secretWordsB[3])};
-            Gate gate = new Gate(theme, locks, 1, 0);
-            Gate gateB = new Gate(themeB, locksB, 2, 1);
-           
-            Gate[] gates = { gate, gateB };
-
-            _gateManager.LoadGates(gates);
 
             ConsoleService.SetFontColor(defaultColor);
 
@@ -94,7 +81,7 @@ namespace SuperHangingManGame.Services
 
             await PlayIntro();
 
-            await StartChallenges(gates);
+            await StartChallenges(_gateManager.GetGates()); ;
             await DialogueService.SkipLines(5);
         }
         private async Task DrawLogo()

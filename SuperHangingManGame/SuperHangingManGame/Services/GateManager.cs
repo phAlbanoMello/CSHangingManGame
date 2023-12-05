@@ -14,9 +14,24 @@ namespace SuperHangingManGame.Services
 			//TODO:get GatesData from serializer
         }
 
-        public void LoadGates(Gate[] gates)
+		public Gate[] GetGates()
 		{
-			_gates = gates;
+			return _gates;
+		}
+
+        public void LoadGates()
+		{
+            string[] secretWords = { "Tree", "Mountain", "Cave" };
+            Theme theme = new Theme(ConsoleColor.Green, "Nature", secretWords);
+            Lock[] locks = { new Lock(0, secretWords[0]), new Lock(1, secretWords[1]), new Lock(2, secretWords[2]) };
+
+            string[] secretWordsB = { "Asphalt", "Street", "Building", "Traffic" };
+            Theme themeB = new Theme(ConsoleColor.Blue, "City", secretWordsB);
+            Lock[] locksB = { new Lock(0, secretWordsB[0]), new Lock(1, secretWordsB[1]), new Lock(2, secretWordsB[2]), new Lock(3, secretWordsB[3]) };
+            Gate gate = new Gate(theme, locks, 1, 0);
+            Gate gateB = new Gate(themeB, locksB, 2, 1);
+
+            _gates = new Gate[] { gate, gateB };
 		}
 
 		public bool IsGateOpen(int index)

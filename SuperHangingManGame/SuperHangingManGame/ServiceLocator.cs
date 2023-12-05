@@ -24,6 +24,7 @@ namespace SuperHangingManGame.Services
             jsonFilesLocator = new JSONFilesLocator();
             //GateDataSerializationService = new GateDataSerializationService();
             gateManager = new GateManager();
+            gateManager.LoadGates();
             guessValidationService = new GuessValidationService();
             gameService = new GameService(gateManager);
 
