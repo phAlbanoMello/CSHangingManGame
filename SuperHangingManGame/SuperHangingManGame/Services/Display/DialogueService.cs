@@ -8,14 +8,6 @@ namespace SuperHangingManGame.Services.Display
         private const string pattern = @"\*p\((\d+)\)"; //*p(int delayinMilliseconds)
         private int baseSpeed = 1;
 
-        /// <summary>
-        /// Display Messages with support for pause patterns on the strings that can be marked with *p(int delayInMilliseconds)
-        /// </summary>
-        /// <param name="message">Message to be displayed</param>
-        /// <param name="typingDelay">Delay between each character</param>
-        /// <param name="skipLine">If the cursor should go to the next line after displaying the message</param>
-        /// <returns></returns>
-        /// 
         public static async Task DisplayMessage(string message, int typingDelay, ConsoleService.AlignPosition alignment = ConsoleService.AlignPosition.Middle)
         {
             string finalString = message;

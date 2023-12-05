@@ -8,19 +8,19 @@ namespace SuperHangingManGame.Services
     public class GameService : IGameService
     {
         private IGateManager _gateManager;
-  
+
         private int gameSpeed = 1;
         private int remainingTries = 3;
-        private char[] guessedLetters = new char[] {'_'};
+        private char[] guessedLetters = new char[] { '_' };
         private bool isGameOver = false;
         private int brokenLocks = 0;
 
         private ConsoleColor defaultColor = ConsoleColor.Cyan;
         private List<CursorPoint> cursorPoints = new List<CursorPoint>();
 
-        private readonly int[] frequency = new int[] { 440, 494, 523, 440, 392, 440, 494, 523, 440, 494, 523, 440, 494, 523, 440, 392}; // A4, B4, C5, A4, G4, A4, B4, C5
-        private readonly int[] duration = new int[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500}; // Durations in milliseconds
-         
+        private readonly int[] frequency = new int[] { 440, 494, 523, 440, 392, 440, 494, 523, 440, 494, 523, 440, 494, 523, 440, 392 };
+        private readonly int[] duration = new int[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500 };
+
         private readonly string[] logoArray = new string[]
         {
             "||----------------||||||||||||||||||||||||----------------||",
@@ -44,15 +44,21 @@ namespace SuperHangingManGame.Services
             _gateManager = gateManager;
         }
 
-        public void SetTypingBaseSpeed(int speed)
+        public async Task StartGame()
         {
-            if (speed <= 0)
-            {
-                speed = 1;
-            }
-            gameSpeed = speed;
-        }
+            isGameOver = false;
 
+            ConsoleService.SetFontColor(defaultColor);
+
+            PlaySong(frequency, duration);
+
+            await DrawLogo();
+
+            await PlayIntro();
+
+            await StartChallenges(_gateManager.GetGates()); ;
+            await DialogueService.SkipLines(5);
+        }
         private int Delay(int delayInMilliseconds)
         {
             return delayInMilliseconds / gameSpeed;
@@ -69,21 +75,6 @@ namespace SuperHangingManGame.Services
             });
         }
 
-        public async Task StartGame()
-        {
-            isGameOver = false;
-
-            ConsoleService.SetFontColor(defaultColor);
-
-            PlaySong(frequency, duration);
-
-            await DrawLogo();
-
-            await PlayIntro();
-
-            await StartChallenges(_gateManager.GetGates()); ;
-            await DialogueService.SkipLines(5);
-        }
         private async Task DrawLogo()
         {
             await DialogueService.SkipLines(1);
@@ -110,16 +101,20 @@ namespace SuperHangingManGame.Services
                 ClearLineAtPoint(GetCursorPoint("ThemeIntro"));
                 ConsoleService.SetCursorPosition(GetCursorPoint("ThemeIntro"));
                 ConsoleService.SetFontColor(gates[i].Theme.Color);
+
                 await DialogueService.DisplayMessage(Messages.GATE_THEME_PRESENTATION, Delay(25));
                 AddCursorPoint("ThemeName");
                 ClearLineAtPoint(GetCursorPoint("ThemeName"));
                 ConsoleService.SetCursorPosition(GetCursorPoint("ThemeName"));
+
                 await DialogueService.DisplayMessage(gates[i].Theme.Name, Delay(80));
 
                 Lock[] locks = gates[i].GetLocks();
+
                 await DialogueService.SkipLines(1);
                 AddCursorPoint("Gate");
                 ClearLineAtPoint(GetCursorPoint("Gate"));
+
                 await DrawGate(gates[i]);
                 ConsoleService.SetFontColor(defaultColor);
 
@@ -162,89 +157,36 @@ namespace SuperHangingManGame.Services
                 {
                     Console.Clear();
                     await StartGame();
-                } else if (choice == ConsoleKey.N) {
+                }
+                else if (choice == ConsoleKey.N)
+                {
                     Environment.Exit(0);
                 }
             }
             //Gates finished
         }
-
-        private async Task PlayIntro()
-        {
-            await DialogueService.SkipLines(2);
-            await DialogueService.DisplayMessage(Messages.WELCOME_MESSAGE, Delay(10));
-            await DialogueService.SkipLines(1);
-            for (int i = 0; i < Messages.INTRO.Length; i++)
-            {
-                await DialogueService.DisplayMessage(Messages.INTRO[i], Delay(10));
-            }
-        }
-
-        private static int GetNumberOfTries(string word)
-        {
-            return (int)Math.Ceiling(word.Length / 2.0);
-        }
-
-        public void ClearLineAtPoint(CursorPoint cursorPoint)
-        {
-            ConsoleService.SetCursorPosition(cursorPoint);
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.Write(new string(' ', Console.BufferWidth));
-            ConsoleService.SetCursorPosition(cursorPoint);
-        }
-
-        private void AddCursorPoint(string label)
-        {
-            bool hasCursorPoint = cursorPoints.FirstOrDefault((item)=> item.label == label) != null;
-            if (!hasCursorPoint) {
-                cursorPoints.Add(new CursorPoint(ConsoleService.GetCursorPosition(), label));
-            }
-        }
-
-        private CursorPoint GetCursorPoint(string label)
-        {
-            CursorPoint cursorPoint = cursorPoints.FirstOrDefault((item) => item.label == label);
-            if (cursorPoint != null) return cursorPoint;
-            return new CursorPoint();
-        }
-
-        private async Task SetDialogue(string message, int delay)
-        {
-            CursorPoint dialoguePoint = GetCursorPoint("Dialogue");
-            ClearLineAtPoint(dialoguePoint);
-            ConsoleService.SetCursorPosition(dialoguePoint);
-            await DialogueService.DisplayMessage(message, delay);
-        }
-        private async Task SetGuessingField(char[] guessedLetters, string secretWordUpper)
-        {
-            CursorPoint guessingPoint = GetCursorPoint("GuessingField");
-            ClearLineAtPoint(guessingPoint);
-            ConsoleService.SetCursorPosition(guessingPoint);
-            await DrawingService.DrawGuessingField(guessedLetters, secretWordUpper);
-        }
-
-        public async Task RunGame(string secretWord)
+        private async Task RunGame(string secretWord)
         {
             string secretWordUpper = secretWord.ToUpper();
             remainingTries = GetNumberOfTries(secretWord);
-           
+
             AddCursorPoint("TryCount");
             ClearLineAtPoint(GetCursorPoint("TryCount"));
             await DialogueService.DisplayMessage($"Remaining Tries : *p(1200){remainingTries}", Delay(80));
-            
+
             await Task.Delay(1000);
             await DialogueService.SkipLines(1);
-            
+
             AddCursorPoint("Dialogue");
             await SetDialogue("Enter your guess", Delay(25));
-            
+
             while (remainingTries > 0)
             {
                 char guess = char.ToUpper(Console.ReadKey().KeyChar);
 
                 //TODO : Find a way to stop the player from pressing the guess multiple times
                 await DialogueService.SkipLines(1);
-                
+
                 if (!char.IsLetter(guess))
                 {
                     await SetDialogue("That's not even a letter", Delay(25));
@@ -281,8 +223,66 @@ namespace SuperHangingManGame.Services
                 await SetDialogue(Messages.FAILED_WORD_GUESS, Delay(25));
                 _gateManager.SetLockStateBySecretWord(secretWord, LockedState.Broken);
             }
-   
+
         }
+
+
+        private async Task PlayIntro()
+        {
+            await DialogueService.SkipLines(2);
+            await DialogueService.DisplayMessage(Messages.WELCOME_MESSAGE, Delay(10));
+            await DialogueService.SkipLines(1);
+            for (int i = 0; i < Messages.INTRO.Length; i++)
+            {
+                await DialogueService.DisplayMessage(Messages.INTRO[i], Delay(10));
+            }
+        }
+
+        private static int GetNumberOfTries(string word)
+        {
+            return (int)Math.Ceiling(word.Length / 2.0);
+        }
+
+        private void ClearLineAtPoint(CursorPoint cursorPoint)
+        {
+            ConsoleService.SetCursorPosition(cursorPoint);
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.BufferWidth));
+            ConsoleService.SetCursorPosition(cursorPoint);
+        }
+
+        private void AddCursorPoint(string label)
+        {
+            bool hasCursorPoint = cursorPoints.FirstOrDefault((item) => item.label == label) != null;
+            if (!hasCursorPoint)
+            {
+                cursorPoints.Add(new CursorPoint(ConsoleService.GetCursorPosition(), label));
+            }
+        }
+
+        private CursorPoint GetCursorPoint(string label)
+        {
+            CursorPoint cursorPoint = cursorPoints.FirstOrDefault((item) => item.label == label);
+            if (cursorPoint != null) return cursorPoint;
+            return new CursorPoint();
+        }
+
+        private async Task SetDialogue(string message, int delay)
+        {
+            CursorPoint dialoguePoint = GetCursorPoint("Dialogue");
+            ClearLineAtPoint(dialoguePoint);
+            ConsoleService.SetCursorPosition(dialoguePoint);
+            await DialogueService.DisplayMessage(message, delay);
+        }
+        private async Task SetGuessingField(char[] guessedLetters, string secretWordUpper)
+        {
+            CursorPoint guessingPoint = GetCursorPoint("GuessingField");
+            ClearLineAtPoint(guessingPoint);
+            ConsoleService.SetCursorPosition(guessingPoint);
+            await DrawingService.DrawGuessingField(guessedLetters, secretWordUpper);
+        }
+
+
         private void DisplayGameState()
         {
             Console.WriteLine($"Word: {string.Join(" ", guessedLetters)}");

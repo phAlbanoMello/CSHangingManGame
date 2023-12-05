@@ -21,19 +21,14 @@ namespace SuperHangingManGame.Services
      
         public async Task InitializeServices()
         {
-            jsonFilesLocator = new JSONFilesLocator();
             //GateDataSerializationService = new GateDataSerializationService();
+            //guessValidationService = new GuessValidationService();
+            jsonFilesLocator = new JSONFilesLocator();
             gateManager = new GateManager();
             gateManager.LoadGates();
-            guessValidationService = new GuessValidationService();
             gameService = new GameService(gateManager);
 
-           // GateDataSerializationService.Init(jsonFilesLocator);
-
-            //GateDataSerializationService.InitProgressionService() --> Make it get the path to the jsonFiles
-            //gateManager.LoadGates(progressionService); --> Make progressionService be able to return arrays of gates
-            //dialogueService.LoadMessages() --> Make it get the path to messages jsonFile
-
+            //GateDataSerializationService.Init(jsonFilesLocator);
         }
     }
 }
