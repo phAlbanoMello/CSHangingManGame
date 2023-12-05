@@ -1,0 +1,23 @@
+{
+  "messages": {
+    "WELCOME_MESSAGE": "Welcome to Ourobouro's Gates*p(1000)\n",
+    "INTRO": [
+      "You are trapped inside a maze of ancient gates...*p(1000)\n",
+      "Each gate has locks that can be opened if you guess their secret words.\n"
+    ],
+    "GATE_THEME_PRESENTATION": "Current gate theme is*p(1000)\n",
+    "GUESS_CUE": "Can you guess it,*p(70) challenger?\n",
+    "RIGHT_WORD_GUESS": "You opened a lock",
+    "FAILED_WORD_GUESS": "You just broke a lock...",
+    "REMAINING_TRIES": "Incorrect!*p(70) Remaining tries:"
+  },
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms",
+    "You are trapped inside a maze.*p(100) Each gate has locks that you need to unlock by guessing letters."
+  ]
+}

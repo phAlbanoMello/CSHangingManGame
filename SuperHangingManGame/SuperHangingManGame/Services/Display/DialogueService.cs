@@ -1,7 +1,5 @@
-﻿using SuperHangingManGame.Interfaces;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using SuperHangingManGame.Components;
 
 namespace SuperHangingManGame.Services.Display
 {

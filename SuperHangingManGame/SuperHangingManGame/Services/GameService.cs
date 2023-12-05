@@ -2,29 +2,26 @@
 using SuperHangingManGame.Data.Constants;
 using SuperHangingManGame.Interfaces;
 using SuperHangingManGame.Services.Display;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace SuperHangingManGame.Services
 {
     public class GameService : IGameService
     {
         private IGateManager _gateManager;
-        private TextManager _textManager;
   
         private int gameSpeed = 1;
-        private int currentDialogueIndex;
         private int remainingTries = 3;
+        private char[] guessedLetters = new char[] {'_'};
+        private bool isGameOver = false;
+        private int brokenLocks = 0;
+
         private ConsoleColor defaultColor = ConsoleColor.Cyan;
         private List<CursorPoint> cursorPoints = new List<CursorPoint>();
-        private char[] guessedLetters;
-        private bool isGuessingTime = false;
 
-        private int[] frequency = new int[] { 440, 494, 523, 440, 392, 440, 494, 523, 440, 494, 523, 440, 494, 523, 440, 392}; // A4, B4, C5, A4, G4, A4, B4, C5
-        private int[] duration = new int[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500}; // Durations in milliseconds
-
-        private string[] logoArray = new string[]
+        private readonly int[] frequency = new int[] { 440, 494, 523, 440, 392, 440, 494, 523, 440, 494, 523, 440, 494, 523, 440, 392}; // A4, B4, C5, A4, G4, A4, B4, C5
+        private readonly int[] duration = new int[] { 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500}; // Durations in milliseconds
+         
+        private readonly string[] logoArray = new string[]
         {
             "||----------------||||||||||||||||||||||||----------------||",
             "||                |||||||@@@@|||||||||||||                ||",
@@ -45,7 +42,6 @@ namespace SuperHangingManGame.Services
         public GameService(IGateManager gateManager)
         {
             _gateManager = gateManager;
-            _textManager = new TextManager();
         }
 
         public void SetTypingBaseSpeed(int speed)
@@ -75,6 +71,7 @@ namespace SuperHangingManGame.Services
 
         public async Task StartGame()
         {
+            isGameOver = false;
             string[] secretWords = { "Tree", "Mountain", "Cave" };
             Theme theme = new Theme(ConsoleColor.Green, "Nature", secretWords);
             Lock[] locks = { new Lock(0, secretWords[0]), new Lock(1, secretWords[1]), new Lock(2, secretWords[2]) };
@@ -151,24 +148,36 @@ namespace SuperHangingManGame.Services
                     await RunGame(secretWord);
                     await DrawGate(gates[i]);
                     //Next lock
+                    brokenLocks = _gateManager.GetBrokenLocksCount(gates[i]);
+                    if (brokenLocks > lockBreackThreshold)
+                    {
+                        ConsoleService.SetFontColor(ConsoleColor.Red);
+                        await SetDialogue("You*p(100) will*p(100) rot*p(100) here...", Delay(150));
+                        await DialogueService.SkipLines(3);
+                        isGameOver = true;
+                        break;
+                    }
                 }
-                int brokenLocks = _gateManager.GetBrokenLocksCount(gates[i]);
-                if (brokenLocks > lockBreackThreshold)
+                if (isGameOver)
                 {
-                    ConsoleService.SetFontColor(ConsoleColor.Red);
-                    await SetDialogue("You*p(100) will*p(100) rot*p(100) here...", Delay(150));
-                    await DialogueService.SkipLines(3);
-                    //TODO: GameOver here
-                    //Ask to try again or close.
-
+                    break;
                 }
-                else
-                {
-                    ConsoleService.SetFontColor(gates[i].Theme.Color);
-                    await SetDialogue($"The {gates[i].Theme.Name} gate is *p(100)open", Delay(150));
-                    await DialogueService.SkipLines(2);
-                }
+                ConsoleService.SetFontColor(gates[i].Theme.Color);
+                await SetDialogue($"The {gates[i].Theme.Name} gate is *p(100)open", Delay(150));
+                await DialogueService.SkipLines(2);
                 //Next gate
+            }
+            if (isGameOver)
+            {
+                await DialogueService.DisplayMessage("Start again? Y/N", Delay(25));
+                ConsoleKey choice = Console.ReadKey().Key;
+                if (choice == ConsoleKey.Y)
+                {
+                    Console.Clear();
+                    await StartGame();
+                } else if (choice == ConsoleKey.N) {
+                    Environment.Exit(0);
+                }
             }
             //Gates finished
         }
@@ -244,13 +253,8 @@ namespace SuperHangingManGame.Services
             
             while (remainingTries > 0)
             {
-                char guess = ' ';
-                isGuessingTime = true;
-                if (isGuessingTime)
-                {
-                    guess = char.ToUpper(Console.ReadKey().KeyChar);
-                }
-                isGuessingTime = false;
+                char guess = char.ToUpper(Console.ReadKey().KeyChar);
+
                 //TODO : Find a way to stop the player from pressing the guess multiple times
                 await DialogueService.SkipLines(1);
                 

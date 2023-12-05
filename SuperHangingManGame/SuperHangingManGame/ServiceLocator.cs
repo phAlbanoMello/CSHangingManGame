@@ -12,7 +12,8 @@ namespace SuperHangingManGame.Services
     
         private IGuessValidatorService? guessValidationService;
         private IDataSerializer<Gate[]>? gateDataSerializationService;
-        private ITextManager? textManager;
+        private IJsonFilesLocator? jsonFilesLocator;
+
         public IGuessValidatorService ValidatorService { get { return guessValidationService; } private set { } }
         public IDataSerializer<Gate[]> GateDataSerializationService { get => gateDataSerializationService; private set { } }
         public IGateManager GateManager { get => gateManager; private set { } }
@@ -20,16 +21,15 @@ namespace SuperHangingManGame.Services
      
         public async Task InitializeServices()
         {
+            jsonFilesLocator = new JSONFilesLocator();
+            //GateDataSerializationService = new GateDataSerializationService();
             gateManager = new GateManager();
-            textManager = new TextManager();
-
             guessValidationService = new GuessValidationService();
             gameService = new GameService(gateManager);
 
-            //Should I get the json file using an directoryseach service or something like that?
-            //progressionService = new ProgressionService();
+           // GateDataSerializationService.Init(jsonFilesLocator);
 
-            //progressionService.InitProgressionService() --> Make it get the path to the jsonFiles
+            //GateDataSerializationService.InitProgressionService() --> Make it get the path to the jsonFiles
             //gateManager.LoadGates(progressionService); --> Make progressionService be able to return arrays of gates
             //dialogueService.LoadMessages() --> Make it get the path to messages jsonFile
 

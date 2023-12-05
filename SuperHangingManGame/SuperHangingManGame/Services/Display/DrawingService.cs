@@ -1,7 +1,5 @@
 ﻿using SuperHangingManGame.Components;
 using SuperHangingManGame.Data.Constants;
-using SuperHangingManGame.Interfaces;
-using System.ComponentModel;
 
 namespace SuperHangingManGame.Services.Display
 {

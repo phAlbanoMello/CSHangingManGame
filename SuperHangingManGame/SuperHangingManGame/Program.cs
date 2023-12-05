@@ -1,7 +1,5 @@
-﻿using SuperHangingManGame;
-using SuperHangingManGame.Interfaces;
-using SuperHangingManGame.Services;
-using SuperHangingManGame.Components;
+﻿using SuperHangingManGame.Services;
+
 class Program
 {
     static async Task Main()

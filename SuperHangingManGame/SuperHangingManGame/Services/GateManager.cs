@@ -9,7 +9,12 @@ namespace SuperHangingManGame.Services
 
 		public Gate[] Gates => _gates;
 
-		public void LoadGates(Gate[] gates)
+        public GateManager()
+        {
+			//TODO:get GatesData from serializer
+        }
+
+        public void LoadGates(Gate[] gates)
 		{
 			_gates = gates;
 		}

@@ -1,5 +1,4 @@
 ﻿using SuperHangingManGame.Components;
-using SuperHangingManGame.Interfaces;
 using System.Diagnostics;
 
 namespace SuperHangingManGame.Services.Display

@@ -7,16 +7,24 @@ using SuperHangingManGame.Components;
 
 namespace SuperHangingManGame.Services
 {
-    public class ProgressionService : IDataSerializer<Gate[]>
+    public class GateDataSerializationService : IDataSerializer<Gate[]>
     {
-        private readonly Gate[]? gates;
+        private Gate[]? gates = new Gate[] { new Gate() };
 
-        public ProgressionService(string jsonFilePath)
+        public GateDataSerializationService(){}
+
+        public void Init(IJsonFilesLocator jSONFilesLocator)
+        {
+            string jsonFilePath = jSONFilesLocator.GetJsonFilePath("GatesData");
+            LoadGateData(jsonFilePath);
+        }
+
+        private void LoadGateData(string jsonFilePath)
         {
             try
             {
                 string jsonData = File.ReadAllText(jsonFilePath);
-                gates = JsonConvert.DeserializeObject <Gate[]>(jsonData);
+                gates = JsonConvert.DeserializeObject<Gate[]>(jsonData);
             }
             catch (Exception ex)
             {
@@ -38,7 +46,7 @@ namespace SuperHangingManGame.Services
             Console.WriteLine("Invalid index. Returning default data.");
             return new Gate();
         }
-
+      
         public void Serialize(string filePath, Gate[] data)
         {
             throw new NotImplementedException();

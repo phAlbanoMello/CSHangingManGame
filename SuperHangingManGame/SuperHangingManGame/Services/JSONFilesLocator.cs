@@ -2,13 +2,13 @@
 
 namespace SuperHangingManGame.Services
 {
-    internal class JSONFilesLocator : IJsonFilesLocator
+    public class JSONFilesLocator : IJsonFilesLocator
     {
         private readonly string solutionFolderPath;
 
-        public JSONFilesLocator(string solutionFolderPath)
+        public JSONFilesLocator()
         {
-            this.solutionFolderPath = solutionFolderPath;
+            this.solutionFolderPath = GetSolutionFolderPath();
         }
 
         public IEnumerable<string> FindJsonFiles()
@@ -24,5 +24,32 @@ namespace SuperHangingManGame.Services
                 return Enumerable.Empty<string>();
             }
         }
+
+        public string GetJsonFilePath(string fileName)
+        {
+            try
+            {
+                var jsonFiles = FindJsonFiles();
+                var filePath = jsonFiles.FirstOrDefault(file => Path.GetFileName(file) == fileName);
+
+                if (filePath != null)
+                    return filePath;
+                else
+                {
+                    Console.WriteLine($"JSON file '{fileName}' not found.");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting JSON file path: {ex.Message}");
+                return null;
+            }
+        }
+        private static string GetSolutionFolderPath()
+        {
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
     }
 }
+
